@@ -130,16 +130,16 @@ python main.py market-info --help
 #### 💻 使用示例
 
 ```bash
-# 获取5个活跃市场（测试用）
+# 我想快速测试功能是否正常
 python main.py market-info --type active --limit 5 --verbose
 
-# 获取50个活跃市场的基本信息
+# 我想获取当前活跃市场的基本信息进行分析
 python main.py market-info --type active --limit 50
 
-# 获取100个已关闭市场的详细信息（包含时间序列）
+# 我想研究已结束事件的历史数据和价格走势
 python main.py market-info --type closed --limit 100 --mode comprehensive --include-timeseries
 
-# 获取单个市场的完整信息
+# 我想深入了解某个特定市场的详细信息
 python main.py market-info --mode single --market-id 12345
 ```
 
@@ -208,16 +208,16 @@ print(f"获取到 {len(simplified)} 个简化市场")
 #### 💻 使用示例
 
 ```bash
-# 批量收集指定市场的价格数据
+# 我想一次性收集多个市场的详细价格数据
 python main.py price-data --mode batch --markets 123 456 --detailed
 
-# 每30秒监控市场价格变化
+# 我想实时监控市场价格变化，及时发现交易机会
 python main.py price-data --mode monitor --markets 123 456 --interval 30
 
-# 生成过去7天的价格报告
+# 我想生成过去一周的价格分析报告
 python main.py price-data --mode report --days 7
 
-# 获取历史价格数据（小时精度）
+# 我想获取历史价格数据进行回测分析
 python main.py price-data --mode history --markets 123 --fidelity 60
 ```
 
@@ -284,16 +284,16 @@ print(f"历史数据点: {len(history)}")
 #### 💻 使用示例
 
 ```bash
-# 获取指定市场的最新1000条交易记录
+# 我想分析某个市场的交易活动和成交情况
 python main.py order-data --mode trades --market 12345 --limit 1000
 
-# 获取500个活跃订单
+# 我想查看当前有哪些活跃订单可以参考
 python main.py order-data --mode orders --status live --limit 500
 
-# 综合收集订单和交易数据
+# 我想全面了解某个市场的订单和交易情况
 python main.py order-data --mode comprehensive --market 12345
 
-# 获取100条交易记录进行快速分析
+# 我想快速了解市场交易情况，不需要太多数据
 python main.py order-data --mode trades --limit 100 --market 12345
 ```
 
@@ -355,16 +355,16 @@ print(f"订单统计: {stats}")
 #### 💻 使用示例
 
 ```bash
-# 获取单个用户的数据
+# 我想深入分析某个大户的交易行为和持仓情况
 python main.py user-data --mode single --user 0x123...
 
-# 批量获取多个用户的数据
+# 我想批量分析多个用户的交易模式
 python main.py user-data --mode batch --users 0x123... 0x456... --limit 100
 
-# 从文件读取用户列表并批量处理
+# 我有一个大户列表文件，想批量分析他们的数据
 python main.py user-data --mode batch --users-file big_traders.txt --limit 50
 
-# 快速测试：获取5个用户的数据
+# 我想快速测试功能，只分析几个用户
 python main.py user-data --mode batch --users-file users.txt --limit 5
 ```
 
@@ -426,13 +426,13 @@ for i in range(0, len(user_addresses), 50):  # 每批50个用户
 #### 💻 使用示例
 
 ```bash
-# 监控指定市场60分钟，价格变化超过10%时报警
+# 我想监控重要市场的价格波动，及时发现投资机会
 python main.py fluctuation --markets 123 456 --duration 60 --threshold 0.1
 
-# 每30秒检查一次价格变化
+# 我想设置后台监控，定期检查价格变化
 python main.py fluctuation --markets 123 --interval 30 --background
 
-# 快速测试：监控5分钟，5%阈值
+# 我想快速测试监控功能是否正常工作
 python main.py fluctuation --markets 123 --duration 5 --threshold 0.05 --interval 10
 ```
 
@@ -485,16 +485,16 @@ print(f"价格趋势: {trends}")
 #### 💻 使用示例
 
 ```bash
-# 收集完整的市场生态系统数据
+# 我想全面了解整个Polymarket生态系统的数据
 python main.py comprehensive --mode ecosystem --include-monitoring
 
-# 测试模式：收集少量数据验证功能
+# 我想测试系统功能，不需要收集太多数据
 python main.py comprehensive --mode test --max-markets 3 --max-users 5
 
-# 获取特定市场的综合视图
+# 我想深入分析某个特定市场的所有相关数据
 python main.py comprehensive --mode market-view --markets 12345
 
-# 生成综合报告
+# 我想生成一份完整的数据分析报告
 python main.py comprehensive --mode report
 ```
 
@@ -510,13 +510,13 @@ python main.py comprehensive --mode report
 ### 参数组合示例
 
 ```bash
-# 新手友好：详细输出 + 少量数据
+# 我是新手，想看到详细的执行过程和调试信息
 python main.py market-info --type active --limit 5 --verbose
 
-# 生产环境：适量数据 + 静默模式
+# 我要在生产环境运行，只想看到结果不要太多输出
 python main.py market-info --type active --limit 50 --quiet
 
-# 研究分析：大量数据 + 综合模式
+# 我要做深度研究，需要大量数据进行分析
 python main.py order-data --mode comprehensive --limit 1000
 ```
 
