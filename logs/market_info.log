@@ -1,0 +1,34 @@
+2025-05-26 20:50:38,523 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-26 20:50:38,523 - MarketInfoCollector - INFO - 获取市场数据，offset=0, limit=1
+2025-05-26 20:50:39,541 - MarketInfoCollector - INFO - 成功获取 1 个市场
+2025-05-26 20:50:39,545 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-26 20:50:39,549 - MarketInfoCollector - INFO - 获取单个市场详细信息: 12
+2025-05-26 20:50:40,361 - MarketInfoCollector - INFO - 成功获取市场 12 的详细信息
+2025-05-26 20:50:40,366 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-26 20:50:40,373 - MarketInfoCollector - INFO - 获取 active 类型的事件，offset=0, limit=1
+2025-05-26 20:50:41,384 - MarketInfoCollector - INFO - 成功获取 1 个事件
+2025-05-26 20:55:31,071 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-26 20:55:31,071 - MarketInfoCollector - INFO - 获取市场数据，offset=0, limit=1
+2025-05-26 20:55:32,006 - MarketInfoCollector - INFO - 成功获取 1 个市场
+2025-05-26 20:55:32,010 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-26 20:55:32,010 - MarketInfoCollector - INFO - 获取单个市场详细信息: 12
+2025-05-26 20:55:34,794 - MarketInfoCollector - INFO - 成功获取市场 12 的详细信息
+2025-05-26 20:55:34,799 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-26 20:55:34,799 - MarketInfoCollector - INFO - 获取 active 类型的事件，offset=0, limit=1
+2025-05-26 20:55:35,624 - MarketInfoCollector - INFO - 成功获取 1 个事件
+2025-05-27 15:32:44,485 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-27 15:32:44,486 - MarketInfoCollector - INFO - 获取 closed 类型的事件，offset=0, limit=20
+2025-05-27 15:32:45,414 - MarketInfoCollector - INFO - 成功获取 20 个事件
+2025-05-27 15:32:45,428 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-27 15:34:16,226 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-27 15:34:16,227 - MarketInfoCollector - INFO - 获取市场数据，offset=0, limit=30
+2025-05-27 15:34:17,144 - MarketInfoCollector - INFO - 成功获取 30 个市场
+2025-05-27 15:34:17,173 - MarketInfoCollector - INFO - 市场信息收集器初始化完成
+2025-05-27 15:34:17,173 - MarketInfoCollector - INFO - 获取简化市场数据，offset=0, limit=30
+2025-05-27 15:34:17,953 - MarketInfoCollector - WARNING - 请求失败 (尝试 1/3): 404 Client Error: Not Found for url: https://gamma-api.polymarket.com/simplified-markets?limit=30&offset=0&closed=true
+2025-05-27 15:34:17,953 - MarketInfoCollector - INFO - 等待 2 秒后重试...
+2025-05-27 15:34:20,220 - MarketInfoCollector - WARNING - 请求失败 (尝试 2/3): 404 Client Error: Not Found for url: https://gamma-api.polymarket.com/simplified-markets?limit=30&offset=0&closed=true
+2025-05-27 15:34:20,220 - MarketInfoCollector - INFO - 等待 4 秒后重试...
+2025-05-27 15:34:24,493 - MarketInfoCollector - WARNING - 请求失败 (尝试 3/3): 404 Client Error: Not Found for url: https://gamma-api.polymarket.com/simplified-markets?limit=30&offset=0&closed=true
+2025-05-27 15:34:24,493 - MarketInfoCollector - ERROR - 达到最大重试次数，请求失败: https://gamma-api.polymarket.com/simplified-markets
+2025-05-27 15:34:24,493 - MarketInfoCollector - ERROR - 获取简化市场数据失败
