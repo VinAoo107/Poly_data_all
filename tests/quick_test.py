@@ -10,6 +10,12 @@ import requests
 import json
 from datetime import datetime
 
+# 设置编码以避免Windows下的Unicode问题
+if sys.platform.startswith('win'):
+    import codecs
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.detach())
+    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.detach())
+
 # 添加项目根目录到路径
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
@@ -17,7 +23,7 @@ sys.path.insert(0, str(project_root))
 try:
     from config import APIEndpoints
 except ImportError as e:
-    print(f"❌ 导入配置失败: {e}")
+    print(f"[错误] 导入配置失败: {e}")
     print("请确保config.py文件存在且格式正确")
     sys.exit(1)
 
@@ -53,14 +59,14 @@ def test_api_connectivity():
             if response.status_code == 200:
                 data = response.json()
                 count = len(data) if isinstance(data, list) else 1
-                print(f"✅ 成功 - 获取到 {count} 条数据")
+                print(f"[成功] 获取到 {count} 条数据")
                 results.append({"test": test['name'], "status": "成功", "count": count})
             else:
-                print(f"❌ 失败 - 状态码: {response.status_code}")
+                print(f"[失败] 状态码: {response.status_code}")
                 results.append({"test": test['name'], "status": "失败", "error": f"状态码 {response.status_code}"})
                 
         except Exception as e:
-            print(f"❌ 异常 - {str(e)}")
+            print(f"[异常] {str(e)}")
             results.append({"test": test['name'], "status": "异常", "error": str(e)})
     
     return results
@@ -87,7 +93,7 @@ def test_timeseries_data():
             history = data.get("history", [])
             
             if history:
-                print(f"✅ 成功获取 {len(history)} 个历史数据点")
+                print(f"[成功] 获取 {len(history)} 个历史数据点")
                 
                 # 显示数据范围
                 if len(history) > 0:
@@ -101,14 +107,14 @@ def test_timeseries_data():
                 
                 return {"status": "成功", "count": len(history)}
             else:
-                print("⚠️ API响应正常，但没有历史数据")
+                print("[警告] API响应正常，但没有历史数据")
                 return {"status": "无数据", "count": 0}
         else:
-            print(f"❌ 请求失败 - 状态码: {response.status_code}")
+            print(f"[失败] 请求失败 - 状态码: {response.status_code}")
             return {"status": "失败", "error": f"状态码 {response.status_code}"}
             
     except Exception as e:
-        print(f"❌ 请求异常: {str(e)}")
+        print(f"[异常] 请求异常: {str(e)}")
         return {"status": "异常", "error": str(e)}
 
 def test_project_structure():
@@ -136,18 +142,18 @@ def test_project_structure():
     for dir_name in required_dirs:
         dir_path = project_root / dir_name
         if dir_path.exists():
-            print(f"✅ 目录存在: {dir_name}")
+            print(f"[OK] 目录存在: {dir_name}")
         else:
-            print(f"❌ 目录缺失: {dir_name}")
+            print(f"[缺失] 目录缺失: {dir_name}")
             missing_items.append(f"目录: {dir_name}")
     
     # 检查文件
     for file_name in required_files:
         file_path = project_root / file_name
         if file_path.exists():
-            print(f"✅ 文件存在: {file_name}")
+            print(f"[OK] 文件存在: {file_name}")
         else:
-            print(f"❌ 文件缺失: {file_name}")
+            print(f"[缺失] 文件缺失: {file_name}")
             missing_items.append(f"文件: {file_name}")
     
     return {"missing_items": missing_items}
@@ -170,18 +176,18 @@ def generate_test_report(api_results, timeseries_result, structure_result):
     # 项目结构总结
     missing_count = len(structure_result['missing_items'])
     if missing_count == 0:
-        print("项目结构: ✅ 完整")
+        print("项目结构: [完整]")
     else:
-        print(f"项目结构: ⚠️ 缺失 {missing_count} 项")
+        print(f"项目结构: [警告] 缺失 {missing_count} 项")
     
     # 整体状态
     print(f"\n整体状态:")
     if api_success >= api_total * 0.8 and ts_status == "成功" and missing_count == 0:
-        print("🎉 项目状态良好，可以正常使用！")
+        print("[优秀] 项目状态良好，可以正常使用！")
     elif api_success >= api_total * 0.5:
-        print("⚠️ 项目基本可用，但可能存在一些问题")
+        print("[警告] 项目基本可用，但可能存在一些问题")
     else:
-        print("❌ 项目存在较多问题，需要检查配置")
+        print("[错误] 项目存在较多问题，需要检查配置")
     
     # 使用建议
     print(f"\n使用建议:")
@@ -209,7 +215,7 @@ def main():
         generate_test_report(api_results, timeseries_result, structure_result)
         
     except Exception as e:
-        print(f"\n❌ 测试过程中出现异常: {str(e)}")
+        print(f"\n[错误] 测试过程中出现异常: {str(e)}")
         import traceback
         traceback.print_exc()
     
