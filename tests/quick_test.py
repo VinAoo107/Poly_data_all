@@ -1,6 +1,6 @@
 """
-Polymarket 数据收集项目 - 快速测试
-简单的API连接和基本功能测试
+Polymarket Data Collection Project - Quick Test
+Simple API connectivity and basic functionality test
 """
 
 import sys
@@ -10,40 +10,40 @@ import requests
 import json
 from datetime import datetime
 
-# 设置编码以避免Windows下的Unicode问题
+# Set encoding for Windows compatibility
 if sys.platform.startswith('win'):
     import codecs
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout.detach())
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.detach())
 
-# 添加项目根目录到路径
+# Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 try:
     from config import APIEndpoints
 except ImportError as e:
-    print(f"[错误] 导入配置失败: {e}")
-    print("请确保config.py文件存在且格式正确")
+    print(f"[ERROR] Failed to import config: {e}")
+    print("Please ensure config.py exists and is properly formatted")
     sys.exit(1)
 
 def test_api_connectivity():
-    """测试API连接性"""
-    print("=== API连接测试 ===")
+    """Test API connectivity"""
+    print("=== API Connectivity Test ===")
     
     tests = [
         {
-            "name": "Gamma Markets API - 事件",
+            "name": "Gamma Markets API - Events",
             "url": f"{APIEndpoints.GAMMA_BASE_URL}/events",
             "params": {"limit": 5}
         },
         {
-            "name": "Gamma Markets API - 市场",
+            "name": "Gamma Markets API - Markets",
             "url": f"{APIEndpoints.GAMMA_BASE_URL}/markets",
             "params": {"limit": 5}
         },
         {
-            "name": "CLOB API - 简化市场",
+            "name": "CLOB API - Simplified Markets",
             "url": f"{APIEndpoints.CLOB_BASE_URL}/simplified-markets",
             "params": {"limit": 5}
         }
@@ -53,33 +53,33 @@ def test_api_connectivity():
     
     for test in tests:
         try:
-            print(f"\n测试: {test['name']}")
+            print(f"\nTesting: {test['name']}")
             response = requests.get(test['url'], params=test.get('params', {}), timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
                 count = len(data) if isinstance(data, list) else 1
-                print(f"[成功] 获取到 {count} 条数据")
-                results.append({"test": test['name'], "status": "成功", "count": count})
+                print(f"[SUCCESS] Retrieved {count} data items")
+                results.append({"test": test['name'], "status": "SUCCESS", "count": count})
             else:
-                print(f"[失败] 状态码: {response.status_code}")
-                results.append({"test": test['name'], "status": "失败", "error": f"状态码 {response.status_code}"})
+                print(f"[FAILED] Status code: {response.status_code}")
+                results.append({"test": test['name'], "status": "FAILED", "error": f"Status {response.status_code}"})
                 
         except Exception as e:
-            print(f"[异常] {str(e)}")
-            results.append({"test": test['name'], "status": "异常", "error": str(e)})
+            print(f"[ERROR] {str(e)}")
+            results.append({"test": test['name'], "status": "ERROR", "error": str(e)})
     
     return results
 
 def test_timeseries_data():
-    """测试时间序列数据获取"""
-    print("\n=== 时间序列数据测试 ===")
+    """Test timeseries data retrieval"""
+    print("\n=== Timeseries Data Test ===")
     
-    # 使用已知的Token ID
+    # Use known Token ID
     token_id = "42539672745835417166310556793707418417075205359699744726511175708846683253904"
     
     try:
-        print(f"测试Token: {token_id[:30]}...")
+        print(f"Testing Token: {token_id[:30]}...")
         
         params = {
             "market": token_id,
@@ -93,9 +93,9 @@ def test_timeseries_data():
             history = data.get("history", [])
             
             if history:
-                print(f"[成功] 获取 {len(history)} 个历史数据点")
+                print(f"[SUCCESS] Retrieved {len(history)} historical data points")
                 
-                # 显示数据范围
+                # Show data range
                 if len(history) > 0:
                     first_point = history[0]
                     last_point = history[-1]
@@ -103,23 +103,23 @@ def test_timeseries_data():
                     if isinstance(first_point, dict) and 't' in first_point:
                         first_time = datetime.fromtimestamp(first_point['t'])
                         last_time = datetime.fromtimestamp(last_point['t'])
-                        print(f"时间范围: {first_time.strftime('%Y-%m-%d')} 到 {last_time.strftime('%Y-%m-%d')}")
+                        print(f"Time range: {first_time.strftime('%Y-%m-%d')} to {last_time.strftime('%Y-%m-%d')}")
                 
-                return {"status": "成功", "count": len(history)}
+                return {"status": "SUCCESS", "count": len(history)}
             else:
-                print("[警告] API响应正常，但没有历史数据")
-                return {"status": "无数据", "count": 0}
+                print("[WARNING] API response OK, but no historical data")
+                return {"status": "NO_DATA", "count": 0}
         else:
-            print(f"[失败] 请求失败 - 状态码: {response.status_code}")
-            return {"status": "失败", "error": f"状态码 {response.status_code}"}
+            print(f"[FAILED] Request failed - Status code: {response.status_code}")
+            return {"status": "FAILED", "error": f"Status {response.status_code}"}
             
     except Exception as e:
-        print(f"[异常] 请求异常: {str(e)}")
-        return {"status": "异常", "error": str(e)}
+        print(f"[ERROR] Request error: {str(e)}")
+        return {"status": "ERROR", "error": str(e)}
 
 def test_project_structure():
-    """测试项目结构"""
-    print("\n=== 项目结构测试 ===")
+    """Test project structure"""
+    print("\n=== Project Structure Test ===")
     
     required_dirs = [
         "Poly_info",
@@ -138,88 +138,88 @@ def test_project_structure():
     
     missing_items = []
     
-    # 检查目录
+    # Check directories
     for dir_name in required_dirs:
         dir_path = project_root / dir_name
         if dir_path.exists():
-            print(f"[OK] 目录存在: {dir_name}")
+            print(f"[OK] Directory exists: {dir_name}")
         else:
-            print(f"[缺失] 目录缺失: {dir_name}")
-            missing_items.append(f"目录: {dir_name}")
+            print(f"[MISSING] Directory missing: {dir_name}")
+            missing_items.append(f"Directory: {dir_name}")
     
-    # 检查文件
+    # Check files
     for file_name in required_files:
         file_path = project_root / file_name
         if file_path.exists():
-            print(f"[OK] 文件存在: {file_name}")
+            print(f"[OK] File exists: {file_name}")
         else:
-            print(f"[缺失] 文件缺失: {file_name}")
-            missing_items.append(f"文件: {file_name}")
+            print(f"[MISSING] File missing: {file_name}")
+            missing_items.append(f"File: {file_name}")
     
     return {"missing_items": missing_items}
 
 def generate_test_report(api_results, timeseries_result, structure_result):
-    """生成测试报告"""
+    """Generate test report"""
     print("\n" + "="*60)
-    print("测试报告总结")
+    print("Test Report Summary")
     print("="*60)
     
-    # API测试总结
-    api_success = sum(1 for r in api_results if r['status'] == '成功')
+    # API test summary
+    api_success = sum(1 for r in api_results if r['status'] == 'SUCCESS')
     api_total = len(api_results)
-    print(f"\nAPI连接测试: {api_success}/{api_total} 成功")
+    print(f"\nAPI Connectivity Test: {api_success}/{api_total} successful")
     
-    # 时间序列测试总结
+    # Timeseries test summary
     ts_status = timeseries_result['status']
-    print(f"时间序列测试: {ts_status}")
+    print(f"Timeseries Test: {ts_status}")
     
-    # 项目结构总结
+    # Project structure summary
     missing_count = len(structure_result['missing_items'])
     if missing_count == 0:
-        print("项目结构: [完整]")
+        print("Project Structure: [COMPLETE]")
     else:
-        print(f"项目结构: [警告] 缺失 {missing_count} 项")
+        print(f"Project Structure: [WARNING] Missing {missing_count} items")
     
-    # 整体状态
-    print(f"\n整体状态:")
-    if api_success >= api_total * 0.8 and ts_status == "成功" and missing_count == 0:
-        print("[优秀] 项目状态良好，可以正常使用！")
+    # Overall status
+    print(f"\nOverall Status:")
+    if api_success >= api_total * 0.8 and ts_status == "SUCCESS" and missing_count == 0:
+        print("[EXCELLENT] Project is in good condition and ready to use!")
     elif api_success >= api_total * 0.5:
-        print("[警告] 项目基本可用，但可能存在一些问题")
+        print("[WARNING] Project is basically usable but may have some issues")
     else:
-        print("[错误] 项目存在较多问题，需要检查配置")
+        print("[ERROR] Project has multiple issues, please check configuration")
     
-    # 使用建议
-    print(f"\n使用建议:")
-    print("1. 运行 'python start.py' 进行交互式操作")
-    print("2. 运行 'python main.py --help' 查看所有功能")
-    print("3. 查看 README.md 了解详细使用方法")
+    # Usage suggestions
+    print(f"\nUsage Suggestions:")
+    print("1. Run 'python start.py' for interactive operation")
+    print("2. Run 'python main.py --help' to see all features")
+    print("3. Check README.md for detailed usage instructions")
 
 def main():
-    """主测试函数"""
-    print("Polymarket 数据收集项目 - 快速测试")
+    """Main test function"""
+    print("Polymarket Data Collection Project - Quick Test")
     print("="*60)
-    print(f"测试时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Test time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     try:
-        # 1. API连接测试
+        # 1. API connectivity test
         api_results = test_api_connectivity()
         
-        # 2. 时间序列数据测试
+        # 2. Timeseries data test
         timeseries_result = test_timeseries_data()
         
-        # 3. 项目结构测试
+        # 3. Project structure test
         structure_result = test_project_structure()
         
-        # 4. 生成测试报告
+        # 4. Generate test report
         generate_test_report(api_results, timeseries_result, structure_result)
         
     except Exception as e:
-        print(f"\n[错误] 测试过程中出现异常: {str(e)}")
+        print(f"\n[ERROR] Exception occurred during testing: {str(e)}")
         import traceback
         traceback.print_exc()
     
-    print(f"\n测试完成！")
+    print(f"\nTest completed!")
 
 if __name__ == "__main__":
     main() 
