@@ -14,7 +14,12 @@ from datetime import datetime
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from config import APIEndpoints
+try:
+    from config import APIEndpoints
+except ImportError as e:
+    print(f"❌ 导入配置失败: {e}")
+    print("请确保config.py文件存在且格式正确")
+    sys.exit(1)
 
 def test_api_connectivity():
     """测试API连接性"""
